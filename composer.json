@@ -8,6 +8,10 @@
             "email": "justin.waulters@fueltravel.com"
         }
     ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.0.0"
+    },
     "autoload": {
         "psr-4": {
             "FuelTravel\\": "src/"
