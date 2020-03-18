@@ -1,0 +1,16 @@
+{
+    "name": "fuel-travel/package-appearance-customizer",
+    "description": "A Customizer Settings Library",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Justin Waulters",
+            "email": "justin.waulters@fueltravel.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "FuelTravel\\": "src/"
+        }
+    }
+}
