@@ -5,8 +5,9 @@ class AppearanceCustomizer
 
     private $dependencies_met;
     private $active;
+    public  $default_config;
 
-    function __construct() {
+    function __construct( $default_config = '' ) {
 
         $this->dependencies_met = true;
         if ( !class_exists( 'ACF' ) ):
@@ -14,6 +15,12 @@ class AppearanceCustomizer
         endif;
 
         $this->active = true;
+
+        if( $default_config ):
+            $this->default_config = $default_config;
+        else:
+            $this->default_config = require( 'default_config.php' );
+        endif;
 
         add_action( 'init', array( $this, 'customizer_init' ), 4 );
 
@@ -71,7 +78,7 @@ class AppearanceCustomizer
         $wp_customize->add_setting(
             'ft_entry_title_weight',
             array(
-                'default'           => $this->get_default_entry_title_size(),
+                'default'           => $this->get_default_entry_title_weight(),
                 'sanitize_callback' => array( $this, select_option_sanitizer ),
             )
         );
@@ -125,7 +132,7 @@ class AppearanceCustomizer
             )
         );
         $wp_customize->add_control(
-            new WP_Customize_Color_Control(
+            new \WP_Customize_Color_Control(
                 $wp_customize,
                 'ft_heading_color',
                 array(
@@ -152,19 +159,19 @@ class AppearanceCustomizer
     }
 
     function get_default_heading_color() {
-        return '#111';
+        return $this->default_config['heading_color'];
     }
 
     function get_default_entry_title_size() {
-        return '40'; //size in px
+        return $this->default_config['entry_title_size'];
     }
 
     function get_default_entry_title_weight() {
-        return '400'; //weight in number
+        return $this->default_config['entry_title_weight'];
     }
 
     function get_default_entry_content_line_clamp() {
-        return '5'; //height in lines
+        return $this->default_config['entry_content_line_clamp'];
     }
 
     function select_option_sanitizer( $input, $setting ) {
