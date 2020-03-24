@@ -77,5 +77,3 @@ A list of CSS selectors to use for the setting.
 
 ### Special Configuration
 The line clamp configuration requires `font_size` and `line_height` configuration to properly perform clamping. In most cases, these should be set to your theme's default.
-
-## Admin Usage
