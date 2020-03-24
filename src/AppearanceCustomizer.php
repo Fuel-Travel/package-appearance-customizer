@@ -6,10 +6,10 @@ class AppearanceCustomizer
     private $dependencies_met;
     private $active;
     private $stylesheet_handle;
-    private $default_config;
+    private $config;
     public  $enable_settings;
 
-    function __construct( $stylesheet_handle = '', $default_config = '' ) {
+    function __construct( $stylesheet_handle = '', $config = '' ) {
 
         $this->dependencies_met = true;
         if ( !class_exists( 'ACF' ) ):
@@ -20,10 +20,10 @@ class AppearanceCustomizer
 
         $this->stylesheet_handle = $stylesheet_handle;
 
-        if( $default_config ):
-            $this->default_config = $default_config;
+        if( $config ):
+            $this->config = $config;
         else:
-            $this->default_config = require( 'default_config.php' );
+            $this->config = require( 'default_config.php' );
         endif;
 
         $this->enable_settings = true;
@@ -79,7 +79,12 @@ class AppearanceCustomizer
         endif;
 
         // Text Setting Section
-        if( $this->show_it( 'text_section' ) ):
+        if(
+            $this->show_it( 'text_section' ) ||
+            $this->show_it( 'entry_title_size' ) ||
+            $this->show_it( 'entry_title_weight' ) ||
+            $this->show_it( 'entry_content_clamp' )
+        ):
             $wp_customize->add_section( 'ft_text', array(
                 'title'          => __( 'Text', 'ft_textdomain' ),
                 'description'    => __( 'Choose the global settings for text. Color settings are located in the Color section.', 'ft_textdomain' ),
@@ -88,7 +93,7 @@ class AppearanceCustomizer
         endif;
 
         // Entry Title Size
-        if( $this->show_it( 'text_section' ) && $this->show_it( 'entry_title_size' ) ):
+        if( $this->show_it( 'entry_title_size' ) ):
             $wp_customize->add_setting(
                 'ft_entry_title_size',
                 array(
@@ -109,7 +114,7 @@ class AppearanceCustomizer
         endif;
 
         // Entry Title Weight
-        if( $this->show_it( 'text_section' ) && $this->show_it( 'entry_title_weight' ) ):
+        if( $this->show_it( 'entry_title_weight' ) ):
             $wp_customize->add_setting(
                 'ft_entry_title_weight',
                 array(
@@ -141,7 +146,7 @@ class AppearanceCustomizer
         endif;
 
         // Entry Content Line Clamp
-        if( $this->show_it( 'text_section' ) && $this->show_it( 'entry_content_clamp' ) ):
+        if( $this->show_it( 'entry_content_clamp' ) ):
             $wp_customize->add_setting(
                 'ft_entry_content_line_clamp',
                 array(
@@ -176,19 +181,19 @@ class AppearanceCustomizer
     }
 
     function get_default_heading_color() {
-        return $this->default_config['heading_color']['default'];
+        return $this->config['heading_color']['default'];
     }
 
     function get_default_entry_title_size() {
-        return $this->default_config['entry_title_size']['default'];
+        return $this->config['entry_title_size']['default'];
     }
 
     function get_default_entry_title_weight() {
-        return $this->default_config['entry_title_weight']['default'];
+        return $this->config['entry_title_weight']['default'];
     }
 
     function get_default_entry_content_line_clamp() {
-        return $this->default_config['entry_content_line_clamp']['default'];
+        return $this->config['entry_content_line_clamp']['default'];
     }
 
     function select_option_sanitizer( $input, $setting ) {
@@ -221,36 +226,36 @@ class AppearanceCustomizer
         // Heading Color Styles
         if( $this->show_it( 'heading_color' ) ):
             if( $heading_color ):
-                $css .= make_css_targets( $this->default_config['heading_color']['targets'] ) ." {
+                $css .= make_css_targets( $this->config['heading_color']['targets'] ) ." {
                     color: " . $heading_color . ";
                 }";
             endif;
         endif;
 
         // Entry Title Size
-        if( $this->show_it( 'text_section' ) && $this->show_it( 'entry_title_size' ) ):
+        if( $this->show_it( 'entry_title_size' ) ):
             if( $heading_color ):
-                $css .= make_css_targets( $this->default_config['entry_title_size']['targets'] ) . " {
+                $css .= make_css_targets( $this->config['entry_title_size']['targets'] ) . " {
                     font-size: " . $entry_title_size . "px;
                 }";
             endif;
         endif;
 
         // Entry Title Weight
-        if( $this->show_it( 'text_section' ) && $this->show_it( 'entry_title_weight' ) ):
+        if( $this->show_it( 'entry_title_weight' ) ):
             if( $entry_title_weight ):
-                $css .= make_css_targets( $this->default_config['entry_title_weight']['targets'] ) . " {
+                $css .= make_css_targets( $this->config['entry_title_weight']['targets'] ) . " {
                     font-weight: " . $entry_title_weight . ";
                 }";
             endif;
         endif;
 
         // Entry Content Line Clamp
-        if( $this->show_it( 'text_section' ) && $this->show_it( 'entry_content_clamp' ) ):
+        if( $this->show_it( 'entry_content_clamp' ) ):
             if( $entry_content_line_clamp ):
-                $entry_content_font_size = $this->default_config['entry_content_line_clamp']['font_size'];
-                $entry_content_line_height = $this->default_config['entry_content_line_clamp']['line_height'];
-                $css .= make_css_targets( $this->default_config['entry_content_line_clamp']['targets'] ) . " {
+                $entry_content_font_size = $this->config['entry_content_line_clamp']['font_size'];
+                $entry_content_line_height = $this->config['entry_content_line_clamp']['line_height'];
+                $css .= make_css_targets( $this->config['entry_content_line_clamp']['targets'] ) . " {
                     -webkit-line-clamp: " . $entry_content_line_clamp . ";
                     display: -webkit-box;
                     -webkit-box-orient: vertical;
