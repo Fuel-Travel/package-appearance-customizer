@@ -1,4 +1,4 @@
-# Amenities Composer Package (v1.x)
+# Appearance Customizer Composer Package (v1.x)
 
 ## Getting Started
 After installing composer in your project, add the following repositories to your **composer.json** file:
@@ -43,23 +43,23 @@ function enable() {
 }
 ```
 
-### __Construct
+### __construct( $stylesheet_handle = '', $config = '' )
 The class constructor accepts two arguments:
  - stylesheet_handle - *(string)* the handle of the stylesheet that the settings style should be added after<br />Default: The child theme name sanatized with dashes
  - config - *(array)* a configuration array for style targeting and default setting values<br />Default: The default configuration included with the package.
 
 ### enable_settings
-All settings are neabled by default. However, it is best practice to define specifically which settings should be enabled so that when settings are added in teh future they are not added to your production enviornment without testing.
+All settings are neabled by default. However, it is best practice to define specifically which settings should be enabled so that when settings are added in the future they are not added to your production enviornment without testing.
 ```
 $this->appearance_customizer->enable_settings = array(
     'heading_color',
-    'text_section',
+    'text_section', // optional
     'entry_title_size',
     'entry_title_weight',
     'entry_content_clamp',
 );
 ```
-The section will automatically show if one of its child settings is enabled. However, tou can enable it manually too.
+The section will automatically show if one of its child settings is enabled. However, you can enable it manually too.
 
 ## Configuration
 To make your own configuration, copy the contents of the `src/default_config.php` file into a file in your plugin, edit it, and pass its contents to the constructor:
