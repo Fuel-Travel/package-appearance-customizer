@@ -26,7 +26,7 @@ return array(
     'entry_content_line_clamp' => array(
         'default' => '2', // line count
         'targets' => array(
-            '.entry-content p',
+            'body:not(.single) .entry-content p',
         ),
         'font_size' => '16', // px
         'line_height' => '1.875', // em
